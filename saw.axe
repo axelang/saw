@@ -404,9 +404,9 @@ def cmd_test(arena: ref Arena) {
     
     print_str(str("Tests found: "));
     println(i32_to_string(tests_found));
-    print_str(str("Passed: "));
+    print_str(str("\nPassed: "));
     println(i32_to_string(tests_passed));
-    print_str(str("Failed: "));
+    print_str(str("\nFailed: "));
     println(i32_to_string(tests_failed));
 }
 
