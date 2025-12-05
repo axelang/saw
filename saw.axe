@@ -114,10 +114,36 @@ def write_mod_file(module: AxeMod, path: string) {
     write_file(path, content);
 }
 
-/// Gets the current directory name in lowercase
-/// For now, just returns "project" as a default
+/// Gets the current directory name (basename of current working directory)
 def get_current_dir_name(): string {
-    return get_cwd();
+    val cwd: string = get_cwd();
+    if cwd.len == 0 {
+        return str("project");
+    }
+    
+    mut last_sep: i32 = find_last_char(cwd, '/');
+    val last_back: i32 = find_last_char(cwd, '\\');
+    
+    if last_back > last_sep {
+        last_sep = last_back;
+    }
+    
+    if last_sep < 0 {
+        return cwd;
+    }  
+    if last_sep == cast[i32](cwd.len) - 1 and cwd.len > 1 {
+        val trimmed: string = substr(cwd, 0, cwd.len - 1);
+        last_sep = find_last_char(trimmed, '/');
+        val last_back2: i32 = find_last_char(trimmed, '\\');
+        if last_back2 > last_sep {
+            last_sep = last_back2;
+        }
+        if last_sep < 0 {
+            return trimmed;
+        }
+        return substr(trimmed, last_sep + 1, trimmed.len - last_sep - 1);
+    }
+    return substr(cwd, last_sep + 1, cwd.len - last_sep - 1);
 }
 
 /// Checks if a file contains test blocks
