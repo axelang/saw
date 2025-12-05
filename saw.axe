@@ -91,24 +91,24 @@ def read_mod_file(path: string, arena: ref Arena): AxeMod {
     return module;
 }
 
-/// Writes an AxeMod structure to axe.mod file
+/// Writes an axemod structure to axe.mod file
 def write_mod_file(module: AxeMod, path: string) {
     mut content: string = str("");
     
-    content = concat(content, str("name: "));
+    content = concat_c(content, "name: ");
     content = concat(content, module.name);
-    content = concat(content, str("\n"));
-    content = concat(content, str("version: "));
+    content = concat_c(content, "\n");
+    content = concat_c(content, "version: ");
     content = concat(content, module.version);
-    content = concat(content, str("\n"));
-    content = concat(content, str("entry: "));
+    content = concat_c(content, "\n");
+    content = concat_c(content, "entry: ");
     content = concat(content, module.entry);
-    content = concat(content, str("\n"));
+    content = concat_c(content, "\n");
     
     for mut i = 0; i < module.dependencies.len; i++ {
-        content = concat(content, str("dependency: "));
+        content = concat_c(content, "dependency: ");
         content = concat(content, StringList.get(module.dependencies, i));
-        content = concat(content, str("\n"));
+        content = concat_c(content, "\n");
     }
     
     write_file(path, content);
