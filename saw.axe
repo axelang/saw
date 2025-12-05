@@ -298,9 +298,9 @@ def cmd_build(arena: ref Arena) {
     val exit_code: i32 = exec_from_string(build_cmd);
     
     if exit_code == 0 {
-        println "Build successful!";
+        println "Build successful.";
     } else {
-        println "Build failed!";
+        println "Build failed.";
     }
 }
 
