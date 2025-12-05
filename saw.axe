@@ -237,7 +237,7 @@ def cmd_init(arena: ref Arena) {
     }
     
     mut module: AxeMod;
-    module.name = get_current_dir_name();
+    module.name = to_lower(get_current_dir_name());
     module.version = str("0.1.0");
     module.dependencies = StringList.create(arena, 10);
     
