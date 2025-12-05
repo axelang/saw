@@ -117,7 +117,7 @@ def write_mod_file(module: AxeMod, path: string) {
 /// Gets the current directory name in lowercase
 /// For now, just returns "project" as a default
 def get_current_dir_name(): string {
-    return str("project");
+    return get_cwd();
 }
 
 /// Checks if a file contains test blocks
