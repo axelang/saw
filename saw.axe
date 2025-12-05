@@ -788,25 +788,25 @@ def collect_flags(args: ref StringList, start_idx: i32): string {
 
 /// Shows help information
 def show_help() {
-    println "USAGE:";
-    println "    saw <COMMAND> [OPTIONS]";
+    println "Usage:";
+    println "    saw <command> [options]";
     println "";
-    println "COMMANDS:";
+    println "Commands:";
     println "    init            Initialize a new Axe project";
-    println "    build [FLAGS]   Build the project";
-    println "    run [FLAGS]     Build and run the project";
-    println "    test [FLAGS]    Run tests in the project";
+    println "    build [flags]   Build the project";
+    println "    run   [flags]   Build and run the project";
+    println "    test  [flags]   Run tests in the project";
     println "    clean           Remove build artifacts";
     println "    info            Show project information";
     println "";
-    println "    add <URL>       Add a git dependency";
-    println "    remove <NAME>   Remove a dependency";
+    println "    add    <url>    Add a git dependency";
+    println "    remove <name>   Remove a dependency";
     println "    install         Install all dependencies";
     println "";
     println "    help, -h        Show this help message";
     println "    --version, -v   Show version";
     println "";
-    println "FLAGS:";
+    println "Flags:";
     println "    --release       Build with optimizations";
     println "    --debug         Build with debug symbols";
     println "    (etc...)        Other axe compiler flags...)\n";
