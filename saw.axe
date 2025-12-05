@@ -404,7 +404,7 @@ def cmd_test(arena: ref Arena) {
 
 /// Shows help information
 def show_help() {
-    println "usage: saw <command> [options]";
+    println "Usage: saw <command> [options]";
     println "";
     println "  saw init              Initialize a new axe.mod file";
     println "  saw add <git-url>     Add a dependency from a git repository";
