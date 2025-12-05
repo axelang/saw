@@ -272,8 +272,8 @@ def cmd_add(git_url: string, arena: ref Arena) {
     }
 }
 
-/// Builds the project by compiling main.axe
-def cmd_build() {
+/// Builds the project by compiling the entry point from axe.mod
+def cmd_build(arena: ref Arena) {
     val mod_path: string = str("axe.mod");
     
     if !file_exists(mod_path) {
@@ -281,16 +281,20 @@ def cmd_build() {
         return;
     }
     
-    val main_file: string = str("main.axe");
+    mut module: AxeMod = read_mod_file(mod_path, arena);
+    val entry_file: string = module.entry;
     
-    if !file_exists(main_file) {
-        println "No main.axe file found in project";
+    if !file_exists(entry_file) {
+        print_str(str("Entry point file not found: "));
+        println entry_file;
         return;
     }
     
-    println "Building project...";
+    print_str(str("Building "));
+    print_str(entry_file);
+    println "...";
     
-    val build_cmd: string = concat(str("axe "), main_file);
+    val build_cmd: string = concat(str("axe "), entry_file);
     val exit_code: i32 = exec_from_string(build_cmd);
     
     if exit_code == 0 {
@@ -432,7 +436,7 @@ def main() {
             cmd_add(git_url, addr(arena));
         }
     } elif compare(command, str("build")) == 0 {
-        cmd_build();
+        cmd_build(addr(arena));
     } elif compare(command, str("run")) == 0 {
         cmd_run(addr(arena));
     } elif compare(command, str("test")) == 0 {
