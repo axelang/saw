@@ -275,7 +275,7 @@ def cmd_add(git_url: string, arena: ref Arena) {
 /// Builds the project by compiling the entry point from axe.mod
 def cmd_build(arena: ref Arena, flags: string) {
     val mod_path: string = str("axe.mod");
-    
+
     if !file_exists(mod_path) {
         println "No axe.mod file found. Run 'saw init' first.";
         return;
@@ -302,9 +302,9 @@ def cmd_build(arena: ref Arena, flags: string) {
     val exit_code: i32 = exec_from_string(build_cmd);
     
     if exit_code == 0 {
-        println "Build successful.";
+        println "\nBuild successful.";
     } else {
-        println "Build failed.";
+        println "\nBuild failed.";
     }
 }
 
