@@ -273,7 +273,7 @@ def cmd_add(git_url: string, arena: ref Arena) {
 }
 
 /// Builds the project by compiling the entry point from axe.mod
-def cmd_build(arena: ref Arena) {
+def cmd_build(arena: ref Arena, flags: string) {
     val mod_path: string = str("axe.mod");
     
     if !file_exists(mod_path) {
@@ -294,7 +294,11 @@ def cmd_build(arena: ref Arena) {
     print_str(entry_file);
     println "...";
     
-    val build_cmd: string = concat(str("axe "), entry_file);
+    mut build_cmd: string = concat(str("axe "), entry_file);
+    if flags.len > 0 {
+        build_cmd = concat(build_cmd, str(" "));
+        build_cmd = concat(build_cmd, flags);
+    }
     val exit_code: i32 = exec_from_string(build_cmd);
     
     if exit_code == 0 {
@@ -305,7 +309,7 @@ def cmd_build(arena: ref Arena) {
 }
 
 /// Runs the project entry point
-def cmd_run(arena: ref Arena) {
+def cmd_run(arena: ref Arena, flags: string) {
     val mod_path: string = str("axe.mod");
     
     if !file_exists(mod_path) {
@@ -326,7 +330,11 @@ def cmd_run(arena: ref Arena) {
     print_str(entry_file);
     println "...";
     
-    val compile_cmd: string = concat(str("axe "), entry_file);
+    mut compile_cmd: string = concat(str("axe "), entry_file);
+    if flags.len > 0 {
+        compile_cmd = concat(compile_cmd, str(" "));
+        compile_cmd = concat(compile_cmd, flags);
+    }
     val exit_code: i32 = exec_from_string(compile_cmd);
     
     if exit_code != 0 {
@@ -402,16 +410,36 @@ def cmd_test(arena: ref Arena) {
     println(i32_to_string(tests_failed));
 }
 
+/// Collects compiler flags from arguments starting at given index
+def collect_flags(args: ref StringList, start_idx: i32): string {
+    mut flags: string = str("");
+    for mut i = start_idx; i < args.len; i++ {
+        val arg: string = StringList.get(args, i);
+        if has_prefix(arg, str("-")) {
+            if flags.len > 0 {
+                flags = concat(flags, str(" "));
+            }
+            flags = concat(flags, arg);
+        }
+    }
+    return flags;
+}
+
 /// Shows help information
 def show_help() {
     println "Usage: saw <command> [options]";
     println "";
     println "  saw init              Initialize a new axe.mod file";
     println "  saw add <git-url>     Add a dependency from a git repository";
-    println "  saw build             Build the project (compile entry point)";
-    println "  saw run               Build and run the project";
+    println "  saw build [flags]     Build the project (compile entry point)";
+    println "  saw run [flags]       Build and run the project";
     println "  saw test              Run all tests in project";
-    println "  saw help              Show this help message\n";
+    println "  saw help              Show this help message";
+    println "";
+    println "Compiler flags can be passed through to the underlying Axe compiler:\n";
+    println "  --release             Build with optimizations";
+    println "  --debug               Build with debug info";
+    println "  (etc...)              Any other flags are passed through\n";
 }
 
 def main() {
@@ -436,9 +464,11 @@ def main() {
             cmd_add(git_url, addr(arena));
         }
     } elif compare(command, str("build")) == 0 {
-        cmd_build(addr(arena));
+        val flags: string = collect_flags(args, 2);
+        cmd_build(addr(arena), flags);
     } elif compare(command, str("run")) == 0 {
-        cmd_run(addr(arena));
+        val flags: string = collect_flags(args, 2);
+        cmd_run(addr(arena), flags);
     } elif compare(command, str("test")) == 0 {
         cmd_test(addr(arena));
     } elif compare(command, str("help")) == 0 {
