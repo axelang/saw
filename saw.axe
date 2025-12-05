@@ -408,7 +408,7 @@ def show_help() {
     println "  saw build             Build the project (compile entry point)";
     println "  saw run               Build and run the project";
     println "  saw test              Run all tests in project";
-    println "  saw help              Show this help message";
+    println "  saw help              Show this help message\n";
 }
 
 def main() {
