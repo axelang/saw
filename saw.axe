@@ -590,15 +590,15 @@ def cmd_info(arena: ref Arena) {
     
     val module: AxeMod = read_mod_file(mod_path, arena);
     
-    println "Project Info";
     println "────────────────────────────";
     print_str(str("  Name:    "));
     println module.name;
-    print_str(str("  Version: "));
+    print_str(str("\n  Version: "));
     println module.version;
-    print_str(str("  Entry:   "));
+    print_str(str("\n  Entry:   "));
     println module.entry;
-    
+    println "\n────────────────────────────";
+
     if module.description.len > 0 {
         print_str(str("  Desc:    "));
         println module.description;
@@ -610,8 +610,7 @@ def cmd_info(arena: ref Arena) {
     
     if module.dependencies.len > 0 {
         println "";
-        println "Dependencies";
-        println "────────────────────────────";
+        println "────────────────────────────\n";
         for mut i = 0; i < module.dependencies.len; i++ {
             val dep: string = StringList.get(module.dependencies, i);
             mut url: string = str("");
@@ -625,6 +624,7 @@ def cmd_info(arena: ref Arena) {
             }
             println "";
         }
+        println "\n────────────────────────────";
     }
 }
 
