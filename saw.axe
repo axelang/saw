@@ -473,6 +473,8 @@ def main() {
         cmd_test(addr(arena));
     } elif compare(command, str("help")) == 0 {
         show_help();
+    } elif compare(command, str("--version")) == 0 or compare(command, str("-v")) == 0 {
+        println "v0.0.1";
     } else {
         print_str(str("Unknown command: "));
         println command;
