@@ -1,5 +1,7 @@
 use std.lists;
 use std.string;
+use std.os;
+use saw;
 
 /// Writes a lock file for reproducible builds
 def write_lock_file(deps: ref StringList, path: string) {
@@ -43,4 +45,8 @@ def read_lock_file(path: string, arena: ref Arena): ref StringList {
         i++;
     }
     return locked;
+}
+
+test {
+
 }
