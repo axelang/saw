@@ -762,7 +762,7 @@ def show_help() {
     println "Flags:";
     println "    --release       Build with optimizations";
     println "    --debug         Build with debug symbols";
-    println "    (etc...)        Other axe compiler flags...)\n";
+    println "    (etc...)        Other axe compiler flags...\n";
 }
 
 def main() {
