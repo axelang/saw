@@ -689,7 +689,7 @@ def cmd_test(arena: ref Arena, flags: string) {
             print_str(file);
             println "...";
             
-            mut compile_cmd: string = concat(str("axe "), file);
+            mut compile_cmd: string = concat(concat(str("axe "), file), str(" --quiet"));
             if flags.len > 0 {
                 compile_cmd = concat(compile_cmd, str(" "));
                 compile_cmd = concat(compile_cmd, flags);
