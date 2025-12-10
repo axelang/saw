@@ -664,7 +664,8 @@ def cmd_run(arena: ref Arena, flags: string) {
 }
 
 /// Tests all files containing test blocks
-def cmd_test(arena: ref Arena, flags: string) {
+/// If module_filter is non-empty, only test files matching that name
+def cmd_test(arena: ref Arena, flags: string, module_filter: string) {
     val mod_path: string = str("axe.mod");
     
     if !file_exists(mod_path) {
@@ -681,6 +682,13 @@ def cmd_test(arena: ref Arena, flags: string) {
     
     for mut i = 0; i < test_files.len; i++ {
         val file: string = StringList.get(test_files, i);
+        
+        if module_filter.len > 0 {
+            val base_name: string = trim_suffix(file, str(".axe"));
+            if compare(base_name, module_filter) != 0 {
+                continue;
+            }
+        }
         
         if has_test_blocks(file) {
             tests_found++;
@@ -748,7 +756,7 @@ def show_help() {
     println "    init            Initialize a new Axe project";
     println "    build [flags]   Build the project";
     println "    run   [flags]   Build and run the project";
-    println "    test  [flags]   Run tests in the project";
+    println "    test  [module] [flags]   Run tests (optionally for a specific module)";
     println "    clean           Remove build artifacts";
     println "    info            Show project information";
     println "";
@@ -803,8 +811,17 @@ def main() {
         val flags: string = collect_flags(args, 2);
         cmd_run(addr(arena), flags);
     } elif compare(command, str("test")) == 0 or compare(command, str("t")) == 0 {
-        val flags: string = collect_flags(args, 2);
-        cmd_test(addr(arena), flags);
+        mut module_filter: string = str("");
+        mut flags_start: i32 = 2;
+        if args.len > 2 {
+            val potential_module: string = StringList.get(args, 2);
+            if !has_prefix(potential_module, str("-")) {
+                module_filter = potential_module;
+                flags_start = 3;
+            }
+        }
+        val flags: string = collect_flags(args, flags_start);
+        cmd_test(addr(arena), flags, module_filter);
     } elif compare(command, str("clean")) == 0 {
         cmd_clean(addr(arena));
     } elif compare(command, str("info")) == 0 {
