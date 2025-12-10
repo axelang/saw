@@ -5,7 +5,7 @@ use std.os;
 use std.arena;
 use locks;
 
-pub val SAW_VERSION: ref char = "0.0.1";
+pub val SAW_VERSION: ref char = "0.0.2";
 
 /// Represents an axe.mod file structure
 model AxeMod {
