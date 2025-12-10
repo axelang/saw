@@ -753,24 +753,24 @@ def show_help() {
     println "    saw <command> [options]";
     println "";
     println "Commands:";
-    println "    init            Initialize a new Axe project";
-    println "    build [flags]   Build the project";
-    println "    run   [flags]   Build and run the project";
-    println "    test  [module] [flags]   Run tests (optionally for a specific module)";
-    println "    clean           Remove build artifacts";
-    println "    info            Show project information";
+    println "    init                   Initialize a new Axe project";
+    println "    build [flags]          Build the project";
+    println "    run   [flags]          Build and run the project";
+    println "    test  [module] [flags] Run tests (optionally for a specific module)";
+    println "    clean                  Remove build artifacts";
+    println "    info                   Show project information";
     println "";
-    println "    add    <url>    Add a git dependency";
-    println "    remove <name>   Remove a dependency";
-    println "    install         Install all dependencies";
+    println "    add    <url>           Add a git dependency";
+    println "    remove <name>          Remove a dependency";
+    println "    install                Install all dependencies";
     println "";
-    println "    help, -h        Show this help message";
-    println "    --version, -v   Show version";
+    println "    help, -h               Show this help message";
+    println "    --version, -v          Show version";
     println "";
     println "Flags:";
-    println "    --release       Build with optimizations";
-    println "    --debug         Build with debug symbols";
-    println "    (etc...)        Other axe compiler flags...\n";
+    println "    --release               Build with optimizations";
+    println "    --debug                 Build with debug symbols";
+    println "    (etc...)                Other axe compiler flags...\n";
 }
 
 def main() {
