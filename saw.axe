@@ -735,6 +735,86 @@ def cmd_test(arena: ref Arena, flags: string, module_filter: string) {
     println(i32_to_string(tests_failed));
 }
 
+
+/// Checks files for compilation errors
+def cmd_check(arena: ref Arena, args: ref StringList) {
+    mut check_all: bool = false;
+    mut full_compile: bool = false;
+    mut target_file: string = str("");
+    
+    for mut i = 2; i < args.len; i++ {
+        val arg: string = StringList.get(args, i);
+        if compare(arg, str("--all")) == 0 {
+            check_all = true;
+        } elif compare(arg, str("--full")) == 0 {
+            full_compile = true;
+        } elif !has_prefix(arg, str("-")) {
+            target_file = arg;
+        }
+    }
+    
+    if !check_all and target_file.len == 0 {
+        println "error: 'check' requires a file path or --all";
+        return;
+    }
+    
+    mut files_to_check: ref StringList = StringList.create(arena, 10);
+    
+    if check_all {
+        files_to_check = find_axe_files(arena);
+    } else {
+        if !has_suffix(target_file, str(".axe")) and !file_exists(target_file) {
+            target_file = concat(target_file, str(".axe"));
+        }
+        
+        if !file_exists(target_file) {
+             print_str(str("error: File not found: "));
+             println target_file;
+             return;
+        }
+        StringList.push(files_to_check, arena, target_file);
+    }
+    
+    mut passed: i32 = 0;
+    mut failed: i32 = 0;
+    
+    for mut i = 0; i < files_to_check.len; i++ {
+        val file: string = StringList.get(files_to_check, i);
+        print_str(str("Checking "));
+        print_str(file);
+        println "...";
+        
+        mut cmd: string = concat(str("axe "), file);
+        cmd = concat(cmd, str(" --quiet"));
+        
+        if !full_compile {
+            cmd = concat(cmd, str(" --syntax-only"));
+        }
+        
+        val exit_code: i32 = exec_from_string(cmd);
+        
+        if exit_code == 0 {
+            passed++;
+        } else {
+            failed++;
+        }
+    }
+    
+    if files_to_check.len > 1 {
+        println "";
+        print("Checked: ");
+        println(i32_to_string(passed + failed));
+        print("\nPassed:  ");
+        println(i32_to_string(passed));
+        print("\nFailed:  ");
+        println(i32_to_string(failed));
+    }
+    
+    if failed > 0 {
+        quit(1);
+    }
+}
+
 /// Collects compiler flags from arguments starting at given index
 def collect_flags(args: ref StringList, start_idx: i32): string {
     mut flags: string = str("");
@@ -759,6 +839,7 @@ def show_help() {
     println "    init                   Initialize a new Axe project";
     println "    build [flags]          Build the project";
     println "    run   [flags]          Build and run the project";
+    println "    check [file|--all]     Check for compilation errors";
     println "    test  [module] [flags] Run tests (optionally for a specific module)";
     println "    clean                  Remove build artifacts";
     println "    info                   Show project information";
@@ -825,6 +906,8 @@ def main() {
         }
         val flags: string = collect_flags(args, flags_start);
         cmd_test(addr(arena), flags, module_filter);
+    } elif compare(command, str("check")) == 0 or compare(command, str("c")) == 0 {
+        cmd_check(addr(arena), args);
     } elif compare(command, str("clean")) == 0 {
         cmd_clean(addr(arena));
     } elif compare(command, str("info")) == 0 {
