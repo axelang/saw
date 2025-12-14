@@ -35,7 +35,7 @@ def read_lock_file(path: string, arena: ref Arena): ref StringList {
             break;
         }
         if content.data[i] == '\n' {
-            val line: string = strip(substr(content, line_start, i - line_start));
+            val line: string = strip(substr(content,cast[i32](line_start), i - line_start));
             if has_prefix(line, str("locked: ")) {
                 val dep: string = substr(line, 8, line.len - 8);
                 StringList.push(locked, arena, dep);

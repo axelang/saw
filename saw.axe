@@ -5,7 +5,7 @@ use std.os;
 use std.arena;
 use locks;
 
-pub val SAW_VERSION: ref char = "0.0.3";
+pub val SAW_VERSION: ref char = "0.0.4";
 
 /// Represents an axe.mod file structure
 model AxeMod {
@@ -63,11 +63,11 @@ def read_mod_file(path: string, arena: ref Arena): AxeMod {
         }
         
         if content.data[i] == '\n' {
-            val line: string = substr(content, line_start, i - line_start);
+            val line: string = substr(content, cast[i32](line_start), i - line_start);
             val stripped: string = strip(line);
             
             if stripped.len > 0 {
-                val colon_idx: i32 = find_char_from(stripped, ':', 0);
+                val colon_idx: i32 = find_char_from(stripped, ':', cast[usize](0));
                 if colon_idx >= 0 {
                     val key: string = strip(substr(stripped, 0, colon_idx));
                     val value: string = strip(substr(stripped, colon_idx + 1, stripped.len - colon_idx - 1));
@@ -95,11 +95,11 @@ def read_mod_file(path: string, arena: ref Arena): AxeMod {
     }
     
     if line_start < content.len {
-        val line: string = substr(content, line_start, content.len - line_start);
+        val line: string = substr(content, cast[i32](line_start), content.len - line_start);
         val stripped: string = strip(line);
         
         if stripped.len > 0 {
-            val colon_idx: i32 = find_char_from(stripped, ':', 0);
+            val colon_idx: i32 = find_char_from(stripped, ':', cast[usize](0));
             if colon_idx >= 0 {
                 val key: string = strip(substr(stripped, 0, colon_idx));
                 val value: string = strip(substr(stripped, colon_idx + 1, stripped.len - colon_idx - 1));
@@ -215,7 +215,7 @@ def find_axe_files(arena: ref Arena): ref StringList {
             
             if ls_result.output.data[i] == '\n' or ls_result.output.data[i] == '\r' {
                 if i > line_start {
-                    val file: string = substr(ls_result.output, line_start, i - line_start);
+                    val file: string = substr(ls_result.output, cast[i32](line_start), i - line_start);
                     val trimmed: string = strip(file);
                     if trimmed.len > 0 and has_suffix(trimmed, str(".axe")) {
                         StringList.push(files, arena, trimmed);
@@ -231,7 +231,7 @@ def find_axe_files(arena: ref Arena): ref StringList {
         }
         
         if line_start < ls_result.output.len {
-            val file: string = substr(ls_result.output, line_start, ls_result.output.len - line_start);
+            val file: string = substr(ls_result.output, cast[i32](line_start), ls_result.output.len - line_start);
             val trimmed: string = strip(file);
             if trimmed.len > 0 and has_suffix(trimmed, str(".axe")) {
                 StringList.push(files, arena, trimmed);
