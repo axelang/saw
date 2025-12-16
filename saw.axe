@@ -736,7 +736,7 @@ def cmd_test(arena: ref Arena, flags: string, module_filter: string) {
     println(i32_to_string(tests_found));
     print_str(str("\nPassed: "));
     println(i32_to_string(tests_passed));
-    print_str(str("\nFailed: "));
+    print_str(str("Failed: "));
     println(i32_to_string(tests_failed));
 }
 
