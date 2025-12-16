@@ -3,3 +3,7 @@
 *.exe
 *.c
 *.o
+*.dSYM
+locks
+saw
+.DS_Store
