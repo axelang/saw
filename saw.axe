@@ -708,7 +708,12 @@ def cmd_test(arena: ref Arena, flags: string, module_filter: string) {
             val exit_code: i32 = exec_from_string(compile_cmd);
             
             if exit_code == 0 {
-                val exe_name: string = trim_suffix(file, str(".axe"));
+                mut exe_name: string = trim_suffix(file, str(".axe"));
+                
+                platform posix {
+                    exe_name = concat(str("./"), exe_name);
+                }
+
                 val run_code: i32 = exec_from_string(exe_name);
                 
                 if run_code == 0 {
