@@ -515,6 +515,13 @@ def cmd_clean(arena: ref Arena) {
         val axe_file: string = StringList.get(axe_files, i);
         val base: string = trim_suffix(axe_file, str(".axe"));
         val c_file: string = concat(base, str(".c"));
+        val dsym_file: string = concat(base, str(".dSYM"));
+
+        if is_directory(dsym_file) {
+            rm_dir_recursive(dsym_file);
+            cleaned++;
+        }
+
         if file_exists(c_file) {
             delete_file(c_file);
             cleaned++;
